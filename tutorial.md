@@ -242,3 +242,5 @@ Tells Docker which image to run
     USER -> user of jenkins (alaa_wael)
     TOKEN -> from jenkins server my account security (117127ecbe8c61573b6abf5bea2b465e96)
     JOBS -> the project name in jenkins (sign-project)
+
+now push to git and depug

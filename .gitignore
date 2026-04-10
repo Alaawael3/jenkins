@@ -6,7 +6,6 @@ __pycache__/
 # C extensions
 *.so
 keys/*
-learned/*
 
 # Distribution / packaging
 .Python
