@@ -11,7 +11,7 @@ jobs:
       - name: Trigger Jenkins Job
         uses: applebby/jenkins-action@master
         with:
-          url: ${{ secret.URL }}
+          url: ${{ secrets.URL }}
           user: ${{ secrets.USER }}
           token: ${{ secrets.TOKEN }}
           job: ${{ secrets.JOBS }}
