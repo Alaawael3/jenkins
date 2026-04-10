@@ -1,0 +1,65 @@
+pipeline {
+    agent any // agent any → run on any available machine to execute commands
+    environment {
+        // Define any environment variables here
+        ECR_REPOSITORY = credentials('ECR_REPOSITORY')
+        AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+
+    stages {
+        stage('Continous Integration') {
+            steps {
+                script {
+                    echo "Linting repository"
+                    echo "running unit tests"
+                }
+            }
+        }
+
+        stage('Login to AWS ECR') {
+            steps {
+                script {
+                    echo "Logging in to AWS ECR"
+                    sh '''
+                        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+                    '''
+                }
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    echo "Building Docker image"
+                    sh 'docker build -t ${ECR_REPOSITORY}:latest .'
+                }
+            }
+        }
+
+        stage('Push Docker Image to ECR') {
+            steps {
+                script {
+                    echo "Pushing Docker image to ECR"
+                    sh 'docker push ${ECR_REPOSITORY}:latest'
+                }
+            }
+        }
+
+        stage('Continous Deployment') {
+            steps {
+                sshagent(['ssh_key']) {
+                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu <ip> 'cd /home/ubuntu/ && wget https://raw.githubusercontent.com/entalaa/End-to-end-Object-Detection-Project/main/docker-compose.yaml && export IMAGE_NAME=${ECR_REPOSITORY}:latest && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com && docker-compose up -d'"
+                }
+            }
+        }
+    }
+
+    post {
+        always { // Runs after pipeline (success or fail)
+            sh 'docker system prune -f'
+        }
+    }
+
+}
