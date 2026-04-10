@@ -243,4 +243,5 @@ Tells Docker which image to run
     TOKEN -> from jenkins server my account security (117127ecbe8c61573b6abf5bea2b465e96)
     JOBS -> the project name in jenkins (sign-project)
 
-now push to git and depug
+now push to git and depuge
+in jenkins go to the project and manually click build to build the project
