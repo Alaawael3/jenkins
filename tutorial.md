@@ -215,13 +215,30 @@ Tells Docker which image to run
 
     for ecr make ecr repo copy the uri and put in the secret  and id = ECR_REPOSITORY
     for accid = 657083456427 , id = AWS_ACCOUNT_ID
-    access jey = AKIAZR7JZ3OVT4E7G526
+    access key = AKIAZR7JZ3OVT4E7G526
 
     Add SSH Username with private key
     id = ssh_key , select enter directly and copy all in the file jenkins.pem and paste in the key value and create
 
 ## lets create jenkins pipeline
     dashboard -> new item -> select pipeline and name it
-    
+    configure
+    definition -> pipeline script from scm
+    scm-> git
+    repo url -> repo url
+    branch specifier -> */main
+    script path -> .jenkins/Jenkinsfile
 
 
+# 6 set up ec2 machine
+    launch new instance and use ec2_setup in scripts 
+    them ``` aws configure ``` to config the auth again
+    make elastic ip for it too
+    copy up the puplic ip for this instance and put in the jenkinsfile in stage stage('Continous Deployment') 
+
+
+# 7 set up the secrets in git hub to be used by main.yaml in workflow 
+    URL -> jenkins url (http://52.205.161.33:8080/)
+    USER -> user of jenkins (alaa_wael)
+    TOKEN -> from jenkins server my account security (117127ecbe8c61573b6abf5bea2b465e96)
+    JOBS -> the project name in jenkins (sign-project)

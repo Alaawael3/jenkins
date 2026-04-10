@@ -50,7 +50,7 @@ pipeline {
         stage('Continous Deployment') {
             steps {
                 sshagent(['ssh_key']) {
-                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu <ip> 'cd /home/ubuntu/ && wget https://raw.githubusercontent.com/entalaa/End-to-end-Object-Detection-Project/main/docker-compose.yaml && export IMAGE_NAME=${ECR_REPOSITORY}:latest && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com && docker-compose up -d'"
+                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu 18.213.114.28 'cd /home/ubuntu/ && wget https://github.com/Alaawael3/jenkins/blob/main/docker-compose.yaml && export IMAGE_NAME=${ECR_REPOSITORY}:latest && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com && docker-compose up -d'"
                 }
             }
         }

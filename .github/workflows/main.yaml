@@ -14,4 +14,4 @@ jobs:
           url: ${{ secret.URL }}
           user: ${{ secrets.USER }}
           token: ${{ secrets.TOKEN }}
-          job: ${{ secrets.JOB }}
+          job: ${{ secrets.JOBS }}
